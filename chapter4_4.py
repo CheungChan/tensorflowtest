@@ -1,5 +1,22 @@
 import tensorflow as tf
 
+"""
+为了防止过拟合问题，而使用L1或L2正则化。
+"""
+"""
+计算L1正则化，L2正则化的值
+"""
+weights = tf.constant([[1.0, -2.0], [-3.0, 4.0]])
+with tf.Session() as sess:
+    print(sess.run(tf.contrib.layers.l1_regularizer(.5)(weights)))
+    # 输出为 (|1| + |-2| + |-3| +|4|) * 0.5 = 5,其中0.5为正则化项的权重。
+    print(sess.run(tf.contrib.layers.l2_regularizer(.5)(weights)))
+    # 输出为(1^2 + (-2) ^2 + (-3) ^2 + 4^2 ) /2 * 0.5 = 7.5 TensorFlow会将L2正则化的损失值除以2使得求导得到的结果更简洁
+
+"""
+当网络结构复杂时，定义损失函数不方便了，采用TensorFlow提供的集合(collection)来使得代码更简洁。
+"""
+
 
 # 获取一层神经网络边上的权重，并将这个权重的L2正则化损失加入名称为'loses'的集合中
 def get_weight(shape, _lambda):

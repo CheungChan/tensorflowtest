@@ -1,5 +1,8 @@
 import tensorflow as tf
 
+"""
+滑动平均模型
+"""
 # 定义一个变量用于计算滑动平均，这个变量的初始值为0。注意这里手动指定了变量的类型为tf.float32,因为所有需要计算滑动平均的变量
 # 必须是实数型.
 v1 = tf.Variable(0, dtype=tf.float32)
@@ -13,7 +16,7 @@ maintain_averages_op = ema.apply([v1])
 
 with tf.Session() as sess:
     # 初始化所有的变量
-    init_op = tf.initialize_all_variables()
+    init_op = tf.global_variables_initializer()
     sess.run(init_op)
 
     # 通过ema.average(v1)获取滑动平均之后变量的取值。再初始化之后变量v1的值和v1的滑动平均都为0

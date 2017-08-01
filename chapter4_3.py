@@ -1,6 +1,9 @@
 import tensorflow as tf
 from numpy.random import RandomState
 
+"""
+使用自定义损失函数完整程序
+"""
 batch_size = 8
 # 两个输入节点
 x = tf.placeholder(tf.float32, shape=(None, 2), name='x-input')
@@ -14,6 +17,7 @@ y = tf.matmul(x, w1)
 # 定义预测多了和预测少了的成本
 loss_less = 10
 loss_more = 1
+# tf.select --> tf.where
 loss = tf.reduce_sum(tf.where(tf.greater(y, y_), (y - y_) * loss_more, (y_ - y) * loss_less))
 train_step = tf.train.AdamOptimizer(0.001).minimize(loss)
 
@@ -34,3 +38,8 @@ with tf.Session() as sess:
         end = min(start + batch_size, dataset_size)
         sess.run(train_step, feed_dict={x: X[start:end], y_: Y[start:end]})
         print(sess.run(w1))
+        """
+        输出结果为[[ 1.01934695]
+        [ 1.04280889]]
+        因为loss_less比loss_more大，模型会偏向于多预测一点
+        """
